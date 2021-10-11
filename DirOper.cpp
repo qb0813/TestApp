@@ -78,9 +78,47 @@ bool DirOper::SetIconForDir(std::string sPath)
         }
     }
 
-    std::string sCommand = "attrib " + sPath + " +s /d";
+    if (sPath.find(" ") != std::string::npos)
+    {
+        sPath = '"' + sPath + '"';
+    }
+
+    std::string sCommand = "attrib " + sPath  + " +s /d";
     std::cout << "Command = " << sCommand << std::endl;
     system(sCommand.c_str());
 
     return true;
+}
+
+std::vector<std::string> DirOper::listDirectory(std::string sPath)
+{
+    std::cout << "listDirectoryBegin:: Path = " << sPath << std::endl;
+    std::vector<std::string> vecDirName;
+
+    HANDLE hFind;
+    WIN32_FIND_DATAA findData;
+    hFind = FindFirstFileA(sPath.c_str(), &findData);
+    if (hFind == INVALID_HANDLE_VALUE)
+    {
+        std::cout << "Failed to find first file!\n";
+       
+    }
+    else
+    {
+        do
+        {
+            // 忽略 "." 和 ".." 两个结果
+            if (strcmp(findData.cFileName, ".") == 0 || strcmp(findData.cFileName, "..") == 0)
+            {
+                continue;
+            }
+            if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) // 是否目录
+            {
+                vecDirName.push_back(findData.cFileName);
+                std::cout << findData.cFileName << std::endl;
+            }
+        } while (FindNextFileA(hFind, &findData));
+    }
+
+    return vecDirName;
 }

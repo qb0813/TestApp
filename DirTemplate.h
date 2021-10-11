@@ -1,4 +1,7 @@
 #pragma once
+#ifndef _DIRTEMPLATE_H
+#define _DIRTEMPLATE_H
+#include <map>
 
 enum class E_TemplateType : int
 {
@@ -15,3 +18,13 @@ static std::vector<std::string> vecSSR_STARSType =
 {
 	"¡ï¡ï_N ", "¡ï¡ï¡ï_R", "¡ï¡ï¡ï¡ï_SR", "¡ï¡ï¡ï¡ï¡ï_SSR", "¡ï¡ï¡ï¡ï¡ï¡ï_SP"
 };
+
+
+static std::map<std::string, E_TemplateType> mapTemplateType =
+{
+	{"SSR",			E_TemplateType::SSR},
+	{"STARS",		E_TemplateType::STARS},
+	{"SSR_STARS",   E_TemplateType::SSR_STARS}
+};
+
+#endif
