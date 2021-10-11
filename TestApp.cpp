@@ -4,16 +4,81 @@
 #include <iostream>
 
 #include "DirOper.h"
+#include "ComomFunction.h"
+
+void ShowMenu();
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    //ShowMenu();
 
     DirOper tDirOper;
     //tDirOper.SetOutPutPath("D:\\Test");
     //tDirOper.MakeTemplateDir(E_TemplateType::SSR_STARS);
 
-    tDirOper.SetIconForDir("D:\\Test\\★★_N");
+    //tDirOper.SetIconForDir("D:\\Test\\★★_N");
+
+    //tDirOper.listDirectory("D:\\Test\\*");
+
+    //tDirOper.RenameFile("D:\\Test\\*", "哈哈");
+
+    while (1)
+    {
+        ShowMenu();
+        int iFunction = -1;
+        std::cin >> iFunction;
+        std::string sCommand;
+        std::vector<std::string> vecCommand;
+        sCommand.clear();
+        vecCommand.clear();
+        switch (iFunction)
+        {
+        case 1:
+        {
+            std::cout << "请输入生成目录和模板名" << std::endl;
+            std::cout << "e.g. D:\\Test | SSR_STARS" << std::endl;
+            std::cin >> sCommand;
+            split(sCommand, vecCommand, "|");
+            if (vecCommand.size() != 2)
+            {
+                std::cerr << "Invalid Param number = " << vecCommand.size() << std::endl;
+                break;
+            }
+            tDirOper.SetOutPutPath(vecCommand[0]);
+            tDirOper.MakeTemplateDir(mapTemplateType.at(vecCommand[1]));
+            break;
+        }
+        case 2:
+        {
+            std::cout << "请输入需要应用图标的目录" << std::endl;
+            std::cout << "功能说明: 将对指定目录下所有文件夹应用图标" << std::endl;
+            std::cin >> sCommand;
+            std::string sPrefix = sCommand + "\\";
+            sCommand += "\\*";
+            std::vector<std::string> vecApplyDir;
+            vecApplyDir = tDirOper.listDirectory(sCommand);
+            for (auto& val : vecApplyDir)
+            {
+                tDirOper.SetIconForDir(sPrefix + val);
+            }
+            break;
+        }   
+        default:
+            std::cout << "Undefined Command!!!" << std::endl;
+        }
+    }
+
+    return 1;
+}
+
+void ShowMenu()
+{
+    std::cout << "================测试系统 version 1.0.0===================" << std::endl;
+
+    std::cout << "1. 按模板生成目录" << std::endl;
+    std::cout << "2. 指定目录应用图标" << std::endl;
+
+    std::cout << "请输入需要执行的功能:" << std::endl;
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
