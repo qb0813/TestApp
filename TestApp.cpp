@@ -2,7 +2,6 @@
 //
 
 #include <iostream>
-
 #include "DirOper.h"
 #include "ComomFunction.h"
 
@@ -27,6 +26,7 @@ int main()
         ShowMenu();
         int iFunction = -1;
         std::cin >> iFunction;
+        std::cin.ignore();
         std::string sCommand;
         std::vector<std::string> vecCommand;
         sCommand.clear();
@@ -38,6 +38,7 @@ int main()
             std::cout << "请输入生成目录和模板名" << std::endl;
             std::cout << "e.g. D:\\Test | SSR_STARS" << std::endl;
             std::cin >> sCommand;
+            std::cin.ignore();
             split(sCommand, vecCommand, "|");
             if (vecCommand.size() != 2)
             {
@@ -52,7 +53,9 @@ int main()
         {
             std::cout << "请输入需要应用图标的目录" << std::endl;
             std::cout << "功能说明: 将对指定目录下所有文件夹应用图标" << std::endl;
-            std::cin >> sCommand;
+            char chrCmd[1024] = { 0 };
+            std::cin.getline(chrCmd, sizeof(chrCmd));
+            sCommand = chrCmd;
             std::string sPrefix = sCommand + "\\";
             sCommand += "\\*";
             std::vector<std::string> vecApplyDir;
@@ -61,6 +64,7 @@ int main()
             {
                 tDirOper.SetIconForDir(sPrefix + val);
             }
+            std::cout << "如果没有生效请清理C盘缩略图缓存" << std::endl;
             break;
         }   
         default:

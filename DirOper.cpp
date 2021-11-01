@@ -62,14 +62,11 @@ bool DirOper::SetIconForDir(std::string sPath)
     if(GetFileAttributesA(sPath.c_str()) != INVALID_FILE_ATTRIBUTES)
     {
         std::string sIconName = getPostFixByKey(".ico", sPath);
-        //std::string sIconPath = sPath + "\\icon.ico";
         std::string sIconPath = sPath + "\\" + sIconName;
         std::string sIniPath = sPath + "\\desktop.ini";
         if (GetFileAttributesA(sIconPath.c_str()) != INVALID_FILE_ATTRIBUTES)
         {
-            //SetFileAttributesA(sIconPath.c_str(), FILE_ATTRIBUTE_SYSTEM);
             SetFileAttributesA(sIconPath.c_str(), FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN);
-            //if (WritePrivateProfileStringA(".ShellClassInfo", "IconResource", "icon.ico", sIniPath.c_str()) == TRUE)
             if (WritePrivateProfileStringA(".ShellClassInfo", "IconResource", sIconName.c_str(), sIniPath.c_str()) == TRUE)
             {
                 SetFileAttributesA(sIniPath.c_str(), FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_HIDDEN);
